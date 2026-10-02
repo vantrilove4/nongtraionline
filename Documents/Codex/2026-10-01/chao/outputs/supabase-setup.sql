@@ -1,0 +1,3 @@
+-- Cloud sync has been removed from this version of Vườn Nhỏ.
+-- The game now saves locally and supports manual JSON export/import.
+-- This legacy setup file is not needed; do not run it for this version.
