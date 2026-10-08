@@ -1,0 +1,109 @@
+{
+  "frameSize": [
+    64,
+    64
+  ],
+  "anchor": [
+    32,
+    56
+  ],
+  "columns": 6,
+  "clips": {
+    "idle_down": {
+      "row": 0,
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "idle_up": {
+      "row": 1,
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "idle_left": {
+      "row": 2,
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "idle_right": {
+      "row": 3,
+      "frames": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "walk_down": {
+      "row": 4,
+      "frames": 6,
+      "fps": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "row": 5,
+      "frames": 6,
+      "fps": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "row": 6,
+      "frames": 6,
+      "fps": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "row": 7,
+      "frames": 6,
+      "fps": 8,
+      "loop": true
+    },
+    "hungry_down": {
+      "row": 8,
+      "frames": 3,
+      "fps": 4,
+      "loop": true
+    },
+    "hungry_up": {
+      "row": 9,
+      "frames": 3,
+      "fps": 4,
+      "loop": true
+    },
+    "hungry_left": {
+      "row": 10,
+      "frames": 3,
+      "fps": 4,
+      "loop": true
+    },
+    "hungry_right": {
+      "row": 11,
+      "frames": 3,
+      "fps": 4,
+      "loop": true
+    },
+    "collect_down": {
+      "row": 12,
+      "frames": 6,
+      "fps": 8,
+      "loop": false
+    },
+    "collect_up": {
+      "row": 13,
+      "frames": 6,
+      "fps": 8,
+      "loop": false
+    },
+    "collect_left": {
+      "row": 14,
+      "frames": 6,
+      "fps": 8,
+      "loop": false
+    },
+    "collect_right": {
+      "row": 15,
+      "frames": 6,
+      "fps": 8,
+      "loop": false
+    }
+  }
+}
