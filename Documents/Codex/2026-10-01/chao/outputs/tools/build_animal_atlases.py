@@ -1,13 +1,14 @@
 """Extract fixed-size transparent animal animation atlases from the reference sheet.
 
 Run from the project root with the bundled Python/Pillow runtime:
-  python outputs/tools/build_animal_atlases.py
+  python outputs/tools/build_animal_atlases.py [pig cow chicken fish]
 
 The sprite sheet uses a visual checkerboard. This script removes the connected
 low-chroma background around each outlined animal while filling enclosed light
 areas, which keeps the white/cream details on the cow and chicken intact.
 """
 import json
+import sys
 from collections import deque
 from pathlib import Path
 
@@ -186,7 +187,13 @@ def crop_frame(source, cx, cy, anchor_y=56, window=84, max_y=51, keep_nearby_par
 
 def main():
     source = Image.open(SOURCE).convert("RGBA")
+    requested = set(sys.argv[1:])
+    unknown = requested.difference(ANIMALS)
+    if unknown:
+        raise ValueError(f"Unknown animal(s): {', '.join(sorted(unknown))}")
     for kind, spec in ANIMALS.items():
+        if requested and kind not in requested:
+            continue
         direction_rows = []
         anchor = [32, 32] if kind == "fish" else [32, 56]
         metadata = {"frameSize": [CELL, CELL], "anchor": anchor,
@@ -197,14 +204,19 @@ def main():
                 source_y = spec["tops"][direction_index]
                 xs = X["walk" if state == "swim" else state]
                 down_chicken_walk = kind == "chicken" and state == "walk" and direction == "down"
+                chicken_crop = kind == "chicken"
                 if down_chicken_walk:
                     # This row's six reference poses are spaced about 59 px
                     # apart (unlike the other rows). The generic 63 px grid
                     # drifted progressively left and clipped the last poses.
                     xs = [532, 592, 651, 710, 768, 827]
                 source_frames = [crop_frame(source, x, source_y, anchor[1],
-                                            window=64 if down_chicken_walk else 84,
-                                            max_y=59 if down_chicken_walk else 51,
+                                            # Chicken sprites are wider and closer together around the
+                                            # hunger bubbles. A 64 px source window avoids touching
+                                            # neighboring art, and the first three chicken rows need
+                                            # the full source height so their feet are not clipped.
+                                            window=64 if chicken_crop else 84,
+                                            max_y=(51 if direction == "right" else 63) if chicken_crop else (59 if down_chicken_walk else 51),
                                             keep_nearby_parts=down_chicken_walk) for x in xs]
                 count = FRAME_COUNTS[state]
                 frames = [source_frames[i % len(source_frames)] for i in range(ATLAS_COLUMNS)]
