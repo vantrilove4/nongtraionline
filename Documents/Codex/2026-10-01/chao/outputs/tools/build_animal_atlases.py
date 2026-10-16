@@ -53,7 +53,8 @@ ANIMALS = {
 FRAME_COUNTS = {"idle": 4, "walk": 6, "swim": 6, "hungry": 3, "collect": 6}
 
 
-def foreground_mask(image, dark_outline_only=False, max_y=51, keep_nearby_parts=False):
+def foreground_mask(image, dark_outline_only=False, max_y=51, keep_nearby_parts=False,
+                    min_y=3, close_gaps=True):
     """Keep the central outlined animal and discard the baked checkerboard."""
     w, h = image.size
     px = image.convert("RGBA")
@@ -67,14 +68,15 @@ def foreground_mask(image, dark_outline_only=False, max_y=51, keep_nearby_parts=
         # share the animal's dark outline colors, so exclude the label strip
         # before connected-component analysis (after the top-margin offset).
         is_outline = luma <= 145 if dark_outline_only else (chroma >= 32 or luma <= 135)
-        if i // w <= max_y and a > 36 and not blue_halo and is_outline:
+        if min_y <= i // w <= max_y and a > 36 and not blue_halo and is_outline:
             core[i] = 1
 
     # Close small gaps in outlines, then find the animal's main colored/dark
     # mass. The wider source window lets shifted walk frames remain whole.
     mask_image = Image.frombytes("L", (w, h), bytes(255 if v else 0 for v in core))
-    closed = mask_image.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
-    core = bytearray(1 if value else 0 for value in closed.tobytes())
+    if close_gaps:
+        mask_image = mask_image.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
+    core = bytearray(1 if value else 0 for value in mask_image.tobytes())
     seen = bytearray(w * h)
     components = []
     for start, value in enumerate(core):
@@ -102,7 +104,8 @@ def foreground_mask(image, dark_outline_only=False, max_y=51, keep_nearby_parts=
     if not components:
         if not dark_outline_only:
             return foreground_mask(image, dark_outline_only=True, max_y=max_y,
-                                   keep_nearby_parts=keep_nearby_parts)
+                                   keep_nearby_parts=keep_nearby_parts, min_y=min_y,
+                                   close_gaps=close_gaps)
         return bytearray(w * h)
     components.sort(reverse=True, key=lambda c: c[0])
     main = components[0]
@@ -110,7 +113,8 @@ def foreground_mask(image, dark_outline_only=False, max_y=51, keep_nearby_parts=
         # A saturated action-panel background may merge with the sprite in the
         # broad color mask. Retry with only the dark silhouette outline.
         return foreground_mask(image, dark_outline_only=True, max_y=max_y,
-                               keep_nearby_parts=keep_nearby_parts)
+                               keep_nearby_parts=keep_nearby_parts, min_y=min_y,
+                               close_gaps=close_gaps)
     keep = bytearray(w * h)
     # The outlined animal is one connected component. Other nearby components
     # are often frame numbers, panel borders, or pieces of the adjacent pose.
@@ -152,21 +156,23 @@ def foreground_mask(image, dark_outline_only=False, max_y=51, keep_nearby_parts=
     return bytearray(1 if keep[i] or not outside[i] else 0 for i in range(w * h))
 
 
-def crop_frame(source, cx, cy, anchor_y=56, window=84, max_y=51, keep_nearby_parts=False):
+def crop_frame(source, cx, cy, anchor_y=56, window=84, max_y=51,
+               keep_nearby_parts=False, min_y=3, close_gaps=True):
     # Source poses shift within a roughly 63 px grid. Search a wider region,
     # then isolate the central animal by its connected outlined silhouette.
     # A small top margin prevents ears/horns touching the crop edge, which
     # lets the edge-background filter distinguish the animal from panel art.
     half = window // 2
     frame = source.crop((cx - half, cy - 4, cx + half, cy + 60)).convert("RGBA")
-    mask = foreground_mask(frame, max_y=max_y, keep_nearby_parts=keep_nearby_parts)
+    mask = foreground_mask(frame, max_y=max_y, keep_nearby_parts=keep_nearby_parts,
+                           min_y=min_y, close_gaps=close_gaps)
     rgba = list(frame.getdata())
     for i, (r, g, b, a) in enumerate(rgba):
         # The sheet prints frame numbers and a panel rule directly beneath
         # the animals. The feet finish above this strip; clear it explicitly.
         x, y = i % frame.width, i // frame.width
         blue_halo = b > r * 1.03 and b > g * 1.02 and b - r > 8
-        if not mask[i] or blue_halo or y < 3 or y > max_y:
+        if not mask[i] or blue_halo or y < min_y or y > max_y:
             rgba[i] = (r, g, b, 0)
     frame.putdata(rgba)
     bbox = frame.getchannel("A").getbbox()
@@ -198,26 +204,40 @@ def main():
         anchor = [32, 32] if kind == "fish" else [32, 56]
         metadata = {"frameSize": [CELL, CELL], "anchor": anchor,
                     "columns": ATLAS_COLUMNS, "clips": {}}
+        clean_chicken_idle = {}
         row_index = 0
         for state in spec["states"]:
             for direction_index, direction in enumerate(spec["directions"]):
                 source_y = spec["tops"][direction_index]
                 xs = X["walk" if state == "swim" else state]
+                if kind == "chicken" and state == "collect":
+                    # The final reference pose is cut by the right edge of the
+                    # source sheet. Reuse the preceding complete pose instead.
+                    xs = [1190, 1253, 1316, 1379, 1442, 1442]
                 down_chicken_walk = kind == "chicken" and state == "walk" and direction == "down"
-                chicken_crop = kind == "chicken"
                 if down_chicken_walk:
                     # This row's six reference poses are spaced about 59 px
                     # apart (unlike the other rows). The generic 63 px grid
                     # drifted progressively left and clipped the last poses.
                     xs = [532, 592, 651, 710, 768, 827]
-                source_frames = [crop_frame(source, x, source_y, anchor[1],
-                                            # Chicken sprites are wider and closer together around the
-                                            # hunger bubbles. A 64 px source window avoids touching
-                                            # neighboring art, and the first three chicken rows need
-                                            # the full source height so their feet are not clipped.
+                chicken_crop = kind == "chicken"
+                if kind == "chicken" and state == "hungry":
+                    # The reference's hungry row bakes food bubbles and loose
+                    # crumbs into some cells. Keep the animal clean; hunger is
+                    # represented by the game state, not pixels outside it.
+                    source_frames = clean_chicken_idle[direction][:3]
+                else:
+                    source_frames = [crop_frame(source, x, source_y, anchor[1],
+                                            # Chicken art is tightly spaced near the hunger FX.
+                                            # Keep each cell narrow and use the raw connected
+                                            # silhouette so nearby crumbs/bubbles cannot merge in.
                                             window=64 if chicken_crop else 84,
-                                            max_y=(51 if direction == "right" else 63) if chicken_crop else (59 if down_chicken_walk else 51),
-                                            keep_nearby_parts=down_chicken_walk) for x in xs]
+                                            max_y=(47 if direction == "right" else 63) if chicken_crop else (59 if down_chicken_walk else 51),
+                                            keep_nearby_parts=down_chicken_walk,
+                                            min_y=12 if chicken_crop and direction == "down" else 3,
+                                            close_gaps=not chicken_crop) for x in xs]
+                    if kind == "chicken" and state == "idle":
+                        clean_chicken_idle[direction] = source_frames
                 count = FRAME_COUNTS[state]
                 frames = [source_frames[i % len(source_frames)] for i in range(ATLAS_COLUMNS)]
                 metadata["clips"][f"{state}_{direction}"] = {
