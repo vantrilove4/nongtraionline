@@ -1,0 +1,93 @@
+{
+  "source": "../atlas.png",
+  "size": [
+    384,
+    1024
+  ],
+  "variants": {
+    "charcoal": {
+      "file": "variants/charcoal.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "grayscale",
+          0.72
+        ],
+        [
+          "brightness",
+          0.76
+        ],
+        [
+          "contrast",
+          1.08
+        ]
+      ]
+    },
+    "golden": {
+      "file": "variants/golden.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "sepia",
+          0.38
+        ],
+        [
+          "saturation",
+          1.35
+        ],
+        [
+          "brightness",
+          0.98
+        ]
+      ]
+    },
+    "rose": {
+      "file": "variants/rose.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "hue",
+          -18
+        ],
+        [
+          "saturation",
+          1.25
+        ],
+        [
+          "brightness",
+          1.04
+        ]
+      ]
+    },
+    "mint": {
+      "file": "variants/mint.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "hue",
+          80
+        ],
+        [
+          "saturation",
+          1.1
+        ],
+        [
+          "brightness",
+          1.06
+        ]
+      ]
+    }
+  }
+}
