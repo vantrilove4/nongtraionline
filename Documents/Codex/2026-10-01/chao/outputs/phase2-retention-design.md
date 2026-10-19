@@ -1,6 +1,6 @@
 # Giai đoạn 2 — Thiết kế giữ chân người chơi
 
-**Trạng thái:** thiết kế đã được người dùng duyệt để triển khai theo từng lát cắt. Người dùng đã gửi postflight staging: cả 7 bảng có RLS bật; `authenticated` chỉ có SELECT trên bốn bảng riêng tư và không có quyền anon; hai RPC có EXECUTE cho `authenticated`, `postgres`, `service_role`. Đây là xác nhận dựa trên output được gửi, không phải kết nối staging độc lập. Chưa chạy kiểm thử hành vi, chưa sửa game và chưa xác minh production.
+**Trạng thái:** đã có các migration 001–012 theo kết quả đã gửi từ người dùng. Người dùng yêu cầu nhập save cũ hiện có; migration 013 là bổ sung mới, chưa chạy và chưa xác minh staging/production. Kết quả postflight trước đó chỉ xác nhận cấu trúc/grants, không xác nhận nghiệp vụ.
 
 ## 1. Kết quả rà soát mã hiện có
 
@@ -36,7 +36,7 @@
 
 ### Xử lý bản lưu cũ
 
-`game_saves.save_data` hiện được ghi từ client, nên cả giá trị cũ trên Supabase cũng không tự động trở thành dữ liệu kinh tế đáng tin. Giữ nguyên hàng cũ để phục hồi/đối soát; không tự động nạp tiền, XP, kho, voucher, quest hay `s.collections` vào bảng canonical.
+`game_saves.save_data` đã từng được ghi từ client; do đó không thể chứng minh hồi tố rằng số dư, kho hoặc thời điểm trong snapshot là hợp lệ. Theo yêu cầu mới của người dùng, migration 013 nhập đúng snapshot đang lưu trên máy chủ cho chính tài khoản đã đăng nhập. Đây là chấp nhận snapshot cũ làm số dư khởi điểm một lần, không phải xác minh lịch sử kinh tế. RPC không nhận save từ trình duyệt, khóa hàng máy chủ, không ghi đè canonical đã tồn tại, và giữ nguyên toàn bộ JSON gốc trong `player_farm_state.farm_state.legacy_save` cùng hàng `game_saves`. Không chuyển `s.collections`, quest lịch sử hoặc dữ liệu đó thành tiến độ/thưởng hồi tố. Cây đang sinh trưởng và lượt vật nuôi đang tạo sản phẩm được khởi động lại bằng giờ máy chủ để timestamp từ client không thể mở khóa thu hoạch ngay.
 
 Trước cutover cho tài khoản hiện hữu cần quyết định chính sách chuyển đổi: đối soát bằng dữ liệu có thể xác minh, cấp mức khởi tạo có giới hạn đã công bố, hoặc giữ tài khoản ở trạng thái chờ xử lý. Chưa có bằng chứng để chọn hoặc thực hiện phương án nào. Không được âm thầm xóa save cũ.
 
@@ -101,7 +101,7 @@ Một migration reviewable, chỉ áp dụng staging sau phê duyệt:
 1. Đã tạo draft migration thêm các bảng `player_wallets`, `player_inventory`, `player_farm_state`, `daily_quest_catalog`, `player_daily_quests`, `economy_requests`, `reward_claims`, index/FK/check constraints và RLS. Các FK dùng `ON DELETE RESTRICT` cho tới khi có quy trình xóa tài khoản.
 2. Đã thêm catalog cố định cho ba nhiệm vụ ngày hiện có. RPC `get_my_daily_quests_v2()` chỉ xác định ngày máy chủ HCM và đọc/khởi tạo hàng hiển thị của người đang đăng nhập; không tăng tiến độ hay trao thưởng.
 3. Đã tạo draft RPC `claim_daily_quest_v2()` với request idempotency, khóa quest, domain ledger và cộng ví trong transaction. Claim sẽ từ chối nếu wallet chưa canonical hoặc tiến độ server chưa đủ. Các RPC gieo/thu hoạch/cho ăn chưa được tạo vì chưa có state canonical khởi tạo và client chưa chuyển hành động sang máy chủ. Không cấp browser role quyền DML.
-4. Không nhập dữ liệu từ `game_saves`; không sửa/xóa `game_saves`; dữ liệu `s.collections` giữ nguyên.
+4. Chỉ nhập snapshot cũ theo migration 013 khi chủ tài khoản chủ động bấm chuyển; không sửa/xóa hàng `game_saves`; giữ nguyên dữ liệu `s.collections` trong snapshot nhưng không backfill tiến độ hay thưởng.
 5. Người dùng đã chạy migration trên staging và gửi postflight RLS/table-grants/routine grants. Quyền cơ bản đạt kỳ vọng theo kết quả được gửi; chưa chạy kiểm thử hành vi. Production chưa xác minh.
 
 ### Mốc B — client cutover, sau khi được duyệt riêng

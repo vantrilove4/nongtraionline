@@ -38,15 +38,38 @@
   }
   function showError(error) {
     const message = String(error?.message || error || 'Lỗi kết nối').slice(0, 220);
+    const isLegacySave = /legacy_farm|legacy farm detected/i.test(message);
     const hint = /function .* does not exist|could not find the function|schema cache|404/i.test(message)
       ? 'Migration của mục này chưa có trên Supabase. Hãy áp dụng các migration Giai đoạn 2 lên staging trước.'
-      : /legacy farm detected|canonical .* not initialized|not initialized/i.test(message)
-        ? 'Tài khoản đang dùng save cũ chưa được chuyển sang dữ liệu chuẩn của máy chủ. Game giữ nguyên save; chưa tự nhập hoặc thưởng dựa trên dữ liệu đó.'
+      : isLegacySave
+        ? 'Tìm thấy save cũ trên tài khoản. Sau khi áp dụng migration 013 lên Supabase và cập nhật web, bạn có thể chuyển một lần sang dữ liệu máy chủ; bản save gốc được giữ nguyên. Cây đang lớn và lượt vật nuôi đang tạo sản phẩm sẽ tính lại từ lúc chuyển đổi.'
+        : /canonical .* not initialized|not initialized/i.test(message)
+          ? 'Dữ liệu chuẩn của máy chủ chưa được khởi tạo. Save cũ vẫn được giữ nguyên.'
         : 'Không có thay đổi nào được ghi nhận ở giao dịch này. Kiểm tra kết nối rồi thử lại.';
-    const content = `<p class="p2-note">${escapeHtml(hint)}</p><p class="shopmsg">${escapeHtml(message)}</p><button class="buy" id="p2Retry">Thử tải lại</button>`;
+    const content = `<p class="p2-note">${escapeHtml(hint)}</p><p class="shopmsg">${escapeHtml(message)}</p>${isLegacySave ? '<button class="buy" id="p2Migrate">Chuyển save cũ sang máy chủ</button>' : ''} <button class="buy" id="p2Retry">Thử tải lại</button>`;
     api.body().innerHTML = frame(activeTab, content);
     bindTabs();
     document.getElementById('p2Retry')?.addEventListener('click', () => loadTab(activeTab));
+    document.getElementById('p2Migrate')?.addEventListener('click', migrateLegacySave);
+  }
+  async function migrateLegacySave(event) {
+    const button = event.currentTarget;
+    if (!window.confirm('Chuyển duy nhất save đang lưu trên máy chủ cho tài khoản này? Save gốc sẽ được giữ nguyên. Xu, XP, kho đồ, luống và vật nuôi sẽ được nhập; cây đang lớn và lượt vật nuôi đang chạy sẽ khởi động lại theo thời gian máy chủ.')) return;
+    button.disabled = true;
+    button.textContent = 'Đang chuyển save…';
+    try {
+      const result = await rpc('migrate_legacy_save_v2');
+      const summary = Array.isArray(result) ? result[0] : result;
+      api.body().innerHTML = frame(activeTab, `<p class="p2-note">Đã chuyển save thành công. ${number(summary?.coins)} xu · ${number(summary?.xp)} XP · ${number(summary?.animals)} vật nuôi · ${number(summary?.planted_plots)} luống đang trồng. Save gốc vẫn được giữ nguyên.</p><p class="p2-note">Đang tải lại game để đọc dữ liệu mới…</p>`);
+      window.setTimeout(() => window.location.reload(), 1100);
+    } catch (error) {
+      button.disabled = false;
+      button.textContent = 'Thử chuyển lại';
+      const note = document.createElement('p');
+      note.className = 'p2-note';
+      note.textContent = String(error?.message || error).slice(0, 220);
+      api.body().append(note);
+    }
   }
   function bindTabs() {
     document.querySelectorAll('[data-p2-tab]').forEach(button => button.addEventListener('click', () => loadTab(button.dataset.p2Tab)));

@@ -1,5 +1,22 @@
 # Giai đoạn 2 — migration nền tảng (dark launch)
 
+## Migration 014 — sửa RPC nhiệm vụ ngày và đơn hàng
+
+`20261019_014_fix_daily_quest_and_order_rpcs.sql` thay thế hai RPC đọc đang được web gọi. `get_my_daily_quests_v2()` dùng tên constraint khóa chính thay cho danh sách cột dễ xung đột với biến trả về `period_date`. `get_my_daily_orders_v2()` tiếp tục dùng giá cấu hình theo từng món; nếu cấu hình cũ thiếu giá món, dùng giá mặc định tương ứng trong game. Không thay đổi dữ liệu ví/kho hay các đơn đã được tạo. Áp dụng migration 014 một lần; không chạy lại các migration 001–013.
+
+## Bổ sung migration 013 — nhập một lần save cũ (mới soạn, chưa chạy)
+
+Migration `20261019_013_import_legacy_save_v2.sql` được thêm sau yêu cầu chuyển save cũ. Nó phụ thuộc các bảng/RPC từ migration 001–012, `game_saves`, `game_global_config`, và catalog cây/vật nuôi. RPC không nhận `user_id` hay JSON save từ client; lấy `auth.uid()`, khóa `auth.users` và hàng `game_saves` của chính người chơi, rồi nhập trong một transaction.
+
+- Tạo ledger server-only `legacy_save_imports_v2`, khóa duy nhất theo `user_id`; lần gọi lại trả kết quả cũ. Không cấp quyền đọc/ghi bảng này cho client.
+- Nhập xu/XP vào `player_wallets`, đồ trong kho/hạt/thức ăn vào `player_inventory`, luống và vật nuôi vào `player_farm_state`. Giữ nguyên save JSON đầy đủ dưới `farm_state.legacy_save`; không cập nhật/xóa `game_saves`.
+- Không ghi đè canonical state đã có. Nếu có canonical rows nhưng thiếu ledger import, RPC dừng để tránh cộng/ghi đè hai lần.
+- Dữ liệu cũ từng được client ghi nên không thể xác minh trung thực hồi tố. Việc nhập snapshot chấp nhận số liệu hiện lưu làm số dư khởi điểm một lần; không import lịch sử quest/thành tích/collection hoặc trao thưởng từ `s.collections`.
+- Luống đang có cây và lượt vật nuôi đang chạy được khởi động lại theo giờ cấu hình máy chủ. Timer cũ vẫn nằm nguyên trong `legacy_save`, nhưng không được dùng để cho phép thu hoạch ngay.
+- Bản game cũ vẫn còn các luồng gameplay lưu bằng `game_saves`/local save. Migration này chỉ nhập snapshot và mở nền tảng canonical; nó chưa chuyển toàn bộ các thao tác gameplay hiện tại sang RPC server-authoritative, nên chưa phải cutover kinh tế hoàn chỉnh.
+
+Thứ tự: áp dụng riêng file 013 một lần trên đúng Supabase project mà Vercel đang dùng; sau đó deploy bản web có nút “Chuyển save cũ sang máy chủ”. Mỗi người chơi đăng nhập tài khoản của mình và chủ động bấm nút một lần. Không chạy lại các migration 001–012. File 013 chưa được Codex chạy trên bất kỳ môi trường nào; không có kết nối Supabase production được xác minh.
+
 ## Phạm vi
 
 `20261019_001_phase2_foundation.sql` bổ sung schema canonical và RPC đọc nhiệm vụ ngày. `20261019_002_claim_daily_quest_v2.sql` thêm RPC nhận thưởng giao dịch/idempotent. `20261019_003_new_player_bootstrap_and_plant_v2.sql` thêm khởi tạo an toàn cho tài khoản không có legacy save cùng RPC cuốc đất và gieo hạt. `20261019_004_crop_water_harvest_v2.sql` là draft RPC tưới/thu hoạch cây. `20261019_005_shop_purchase_v2.sql` là draft RPC mua hạt giống/thức ăn.
