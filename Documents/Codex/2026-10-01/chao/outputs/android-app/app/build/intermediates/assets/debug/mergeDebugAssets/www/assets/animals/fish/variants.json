@@ -1,0 +1,89 @@
+{
+  "source": "../atlas.png",
+  "size": [
+    384,
+    512
+  ],
+  "variants": {
+    "blue": {
+      "file": "variants/blue.png",
+      "size": [
+        384,
+        512
+      ],
+      "operations": [
+        [
+          "hue",
+          145
+        ],
+        [
+          "saturation",
+          1.35
+        ]
+      ]
+    },
+    "koi": {
+      "file": "variants/koi.png",
+      "size": [
+        384,
+        512
+      ],
+      "operations": [
+        [
+          "hue",
+          -18
+        ],
+        [
+          "saturation",
+          1.25
+        ],
+        [
+          "contrast",
+          1.08
+        ]
+      ]
+    },
+    "coral": {
+      "file": "variants/coral.png",
+      "size": [
+        384,
+        512
+      ],
+      "operations": [
+        [
+          "hue",
+          320
+        ],
+        [
+          "saturation",
+          1.2
+        ],
+        [
+          "brightness",
+          1.05
+        ]
+      ]
+    },
+    "pearl": {
+      "file": "variants/pearl.png",
+      "size": [
+        384,
+        512
+      ],
+      "operations": [
+        [
+          "hue",
+          75
+        ],
+        [
+          "saturation",
+          1.25
+        ],
+        [
+          "brightness",
+          1.06
+        ]
+      ]
+    }
+  }
+}

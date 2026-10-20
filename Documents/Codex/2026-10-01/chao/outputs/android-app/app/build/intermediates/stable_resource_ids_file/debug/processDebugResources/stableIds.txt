@@ -1,0 +1,4 @@
+com.vuonnho.mobile:string/app_name = 0x7f040000
+com.vuonnho.mobile:mipmap/ic_launcher = 0x7f030000
+com.vuonnho.mobile:drawable/launcher_art = 0x7f020000
+com.vuonnho.mobile:color/launcher_background = 0x7f010000

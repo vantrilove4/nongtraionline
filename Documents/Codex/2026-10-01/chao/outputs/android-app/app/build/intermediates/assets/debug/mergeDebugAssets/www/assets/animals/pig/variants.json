@@ -1,0 +1,89 @@
+{
+  "source": "../atlas.png",
+  "size": [
+    384,
+    1024
+  ],
+  "variants": {
+    "cream": {
+      "file": "variants/cream.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "hue",
+          22
+        ],
+        [
+          "saturation",
+          0.82
+        ],
+        [
+          "brightness",
+          1.1
+        ]
+      ]
+    },
+    "spotted": {
+      "file": "variants/spotted.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "saturation",
+          0.86
+        ],
+        [
+          "contrast",
+          1.12
+        ]
+      ]
+    },
+    "honey": {
+      "file": "variants/honey.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "sepia",
+          0.3
+        ],
+        [
+          "saturation",
+          1.15
+        ],
+        [
+          "brightness",
+          1.02
+        ]
+      ]
+    },
+    "lavender": {
+      "file": "variants/lavender.png",
+      "size": [
+        384,
+        1024
+      ],
+      "operations": [
+        [
+          "hue",
+          260
+        ],
+        [
+          "saturation",
+          1.2
+        ],
+        [
+          "brightness",
+          0.99
+        ]
+      ]
+    }
+  }
+}

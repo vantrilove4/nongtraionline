@@ -1,0 +1,56 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.vuonnho.mobile"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:2:5-67
+11-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:2:22-64
+12
+13    <application
+13-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:5-10:19
+14        android:debuggable="true"
+15        android:extractNativeLibs="false"
+16        android:hardwareAccelerated="true"
+16-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:227-261
+17        android:icon="@mipmap/ic_launcher"
+17-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:115-149
+18        android:label="@string/app_name"
+18-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:82-114
+19        android:roundIcon="@mipmap/ic_launcher"
+19-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:150-189
+20        android:supportsRtl="true"
+20-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:262-288
+21        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+21-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:18-81
+22        android:usesCleartextTraffic="false" >
+22-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:190-226
+23        <activity
+23-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:9-9:20
+24            android:name="com.vuonnho.mobile.MainActivity"
+24-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:19-47
+25            android:configChanges="orientation|screenSize|keyboardHidden"
+25-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:116-177
+26            android:exported="true"
+26-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:48-71
+27            android:screenOrientation="sensorLandscape" >
+27-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:72-115
+28            <intent-filter>
+28-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:5:13-8:29
+29                <action android:name="android.intent.action.MAIN" />
+29-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:6:17-69
+29-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:6:25-66
+30
+31                <category android:name="android.intent.category.LAUNCHER" />
+31-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:7:17-77
+31-->C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:7:27-74
+32            </intent-filter>
+33        </activity>
+34    </application>
+35
+36</manifest>
