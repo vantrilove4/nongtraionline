@@ -23,10 +23,12 @@
 
   const tabs = [
     ['daily', '📋 Ngày'], ['weekly', '🗓️ Tuần'], ['checkin', '🎁 Điểm danh'],
-    ['orders', '📦 Đơn hàng'], ['achievements', '🏅 Thành tích'], ['collection', '📖 Sưu tập']
+    ['achievements', '🏅 Thành tích'], ['collection', '📖 Sưu tập']
   ];
   let activeTab = 'daily';
   let renderGeneration = 0;
+  let autoCheckinAttempted = false;
+  let autoCheckinWaitingForGardenName = false;
 
   function frame(tab, content) {
     const nav = tabs.map(([key, label]) => `<button type="button" role="tab" aria-selected="${key === tab}" class="${key === tab ? 'active' : ''}" data-p2-tab="${key}">${label}</button>`).join('');
@@ -109,12 +111,6 @@
         const goods = rewardData.item_key ? ` · ${escapeHtml(rewardData.item_key)} × ${number(rewardData.item_quantity)}` : '';
         const detail = `${result?.claimed_today ? 'Đã điểm danh hôm nay' : 'Phần thưởng hôm nay'} · Ngày ${number(result?.streak_day)} · ${reward(rewardData.coins, rewardData.xp)}${goods}`;
         html = `<div class="p2-note">Ngày tính theo giờ Việt Nam (Asia/Ho_Chi_Minh), không theo đồng hồ thiết bị.</div>${rows([1], () => actionRow('Điểm danh hằng ngày', detail, result?.claimed_today ? null : { action: 'claim-checkin', id: 'today', label: 'Nhận quà' }))}`;
-      } else if (tab === 'orders') {
-        const result = await rpc('get_my_daily_orders_v2');
-        html = rows(result?.orders || [], order => {
-          const done = order.status === 'fulfilled';
-          return actionRow(`Đơn ${number(order.slot)} · ${order.item_key}`, `${number(order.quantity)} món · ${reward(order.reward_coins, order.reward_xp)}${done ? ' · Đã giao' : ''}`, done ? null : { action: 'fulfill-order', id: String(order.slot), label: 'Giao hàng' });
-        });
       } else if (tab === 'achievements') {
         const result = await rpc('get_my_achievements_v2');
         html = rows(result?.achievements || [], item => {
@@ -145,7 +141,6 @@
       'claim-daily': ['claim_daily_quest_v2', { p_quest_id: id }, `daily_${id}`],
       'claim-weekly': ['claim_weekly_quest_v2', { p_quest_id: id }, `weekly_${id}`],
       'claim-checkin': ['claim_daily_checkin_v2', {}, 'checkin'],
-      'fulfill-order': ['fulfill_daily_order_v2', { p_slot_no: Number(id) }, `order_${id}`],
       'claim-achievement': ['claim_achievement_v2', { p_achievement_id: id }, `achievement_${id}`]
     }[action];
     if (!specs) return;
@@ -173,5 +168,28 @@
     }
     loadTab(activeTab);
   }
+  async function maybeOpenUnclaimedCheckin() {
+    if (!api.session() || !api.ready() || autoCheckinAttempted) return;
+    if (document.getElementById('gardenNameInput')) {
+      autoCheckinWaitingForGardenName = true;
+      return;
+    }
+    autoCheckinWaitingForGardenName = false;
+    autoCheckinAttempted = true;
+    try {
+      const result = await rpc('get_my_daily_checkin_v2');
+      if (result && !result.claimed_today && api.session() && api.ready()) {
+        activeTab = 'checkin';
+        await loadTab('checkin');
+      }
+    } catch (error) {
+      // Keep the game usable if the check-in status cannot be fetched; the player can open it manually.
+      console.warn('Không thể kiểm tra thưởng điểm danh tự động:', error);
+    }
+  }
+  window.addEventListener('farm:game-ready', maybeOpenUnclaimedCheckin);
+  window.addEventListener('farm:garden-name-saved', () => {
+    if (autoCheckinWaitingForGardenName) maybeOpenUnclaimedCheckin();
+  });
   document.getElementById('phase2Retention')?.addEventListener('click', open);
 })();
