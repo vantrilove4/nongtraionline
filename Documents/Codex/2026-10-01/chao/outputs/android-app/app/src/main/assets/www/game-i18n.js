@@ -9,7 +9,16 @@
     : 'en';
 
   const translations = [
-    ['Nhiệm vụ & phần thưởng', 'Quests & Rewards'], ['Bảng xếp hạng', 'Leaderboard'],
+    ['💬 Chat chung', '💬 Global Chat'], ['Mở chat chung', 'Open global chat'], ['Thu nhỏ chat', 'Minimize chat'],
+    ['Đăng nhập để tham gia chat chung.', 'Log in to join the global chat.'], ['Đang tải tin nhắn…', 'Loading messages…'],
+    ['Chat chung · mọi người đều có thể xem', 'Global chat · visible to everyone'], ['Chưa kết nối được. Chạm để thử lại.', 'Could not connect. Tap to retry.'],
+    ['Viết tin nhắn…', 'Write a message…'], ['Gửi', 'Send'], ['Chưa có tin nhắn. Hãy chào mọi người nhé!', 'No messages yet. Say hello!'],
+    ['Thử tải lại', 'Reload'], ['Báo cáo', 'Report'], ['Chặn người chơi', 'Block player'], ['Đã chặn người chơi này.', 'This player has been blocked.'],
+    ['Lý do báo cáo', 'Report reason'], ['Quấy rối', 'Harassment'], ['Không phù hợp', 'Inappropriate'],
+    ['Tin nhắn tối đa 300 ký tự.', 'Messages can contain up to 300 characters.'], ['Đang gửi…', 'Sending…'],
+    ['Mất kết nối chat. Đang thử kết nối lại…', 'Chat disconnected. Reconnecting…'],
+    ['Đã gửi báo cáo để quản trị viên xem xét.', 'Report sent for moderator review.'],
+    ['Nhiệm vụ & phần thưởng', 'Quests & Rewards'], ['Bảng xếp hạng', 'Leaderboard'], ['Người giao nhiệm vụ', 'Quest giver'], ['5 nhiệm vụ', '5 quests'], ['Chào bạn nhé! Anh Trí sẽ quay lại sau 30 phút.', 'Goodbye! Anh Tri will be back in 30 minutes.'], ['Hẹn gặp lại', 'See you again'],
     ['Chợ người chơi', 'Player Market'], ['Thông tin mới cập nhật', 'What’s New'],
     ['Thời gian vật nuôi', 'Animal production time'], ['Thời gian cây trồng', 'Crop growing time'],
     ['Vật phẩm thu hoạch', 'Harvested items'], ['Nhân vật', 'Character'], ['Nông trại', 'Farm'],
@@ -96,6 +105,7 @@
     for (const [source, target] of translations) result = result.replaceAll(source, target);
     return result;
   }
+  window.gameTranslate = translate;
 
   const sourceText = new WeakMap();
   const appliedText = new WeakMap();

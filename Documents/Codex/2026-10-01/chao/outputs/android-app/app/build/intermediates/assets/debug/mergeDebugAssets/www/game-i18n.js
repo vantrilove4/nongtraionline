@@ -9,7 +9,7 @@
     : 'en';
 
   const translations = [
-    ['Nhiệm vụ & phần thưởng', 'Quests & Rewards'], ['Bảng xếp hạng', 'Leaderboard'],
+    ['Nhiệm vụ & phần thưởng', 'Quests & Rewards'], ['Bảng xếp hạng', 'Leaderboard'], ['Người giao nhiệm vụ', 'Quest giver'], ['5 nhiệm vụ', '5 quests'], ['Chào bạn nhé! Anh Trí sẽ quay lại sau 30 phút.', 'Goodbye! Anh Tri will be back in 30 minutes.'], ['Hẹn gặp lại', 'See you again'],
     ['Chợ người chơi', 'Player Market'], ['Thông tin mới cập nhật', 'What’s New'],
     ['Thời gian vật nuôi', 'Animal production time'], ['Thời gian cây trồng', 'Crop growing time'],
     ['Vật phẩm thu hoạch', 'Harvested items'], ['Nhân vật', 'Character'], ['Nông trại', 'Farm'],
