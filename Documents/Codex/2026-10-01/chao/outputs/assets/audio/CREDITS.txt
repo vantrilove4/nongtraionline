@@ -1,0 +1,31 @@
+Vườn Nhỏ web audio assets
+
+Background music: Cozy Music Sampler by Spaceyyy (aquumgifts.itch.io).
+CC BY 4.0. The four included seasonal loops are unmodified.
+Source: https://opengameart.org/content/cozy-music-sampler-%E2%80%94-7-seamless-loops-lofi-farm-fantasy-tavern-halloween-winter-caf%C3%A9-space
+License: https://creativecommons.org/licenses/by/4.0/
+
+Bird chirp: Bird chirping sounds by syncopika. CC0.
+Source: https://lpc.opengameart.org/content/bird-chirping-sounds
+
+Rain ambience: Rain (loopable) by Ylmir. CC0. Four original loop files are included.
+Source: https://opengameart.org/content/rain-loopable
+
+Wind loop: Jonathan Shaw (InspectorJ), loop edit by AntumDeluge. CC BY 3.0.
+Source: https://opengameart.org/content/wind-loop
+License: https://creativecommons.org/licenses/by/3.0/
+
+Water flow: Waterflow Sound by TyberiusGames. CC0.
+Source: https://opengameart.org/content/waterflow-sound
+
+Chicken ambience: Chickens demanding food by alys, via Wikimedia Commons. Public domain.
+Source: https://commons.wikimedia.org/wiki/File:Chickens_demanding_food.ogg
+
+Cow moo: Mudchute cow 1 by Secretlondon. CC BY-SA 3.0 (also offered under GFDL).
+The original recording is included unmodified.
+Source: https://commons.wikimedia.org/wiki/File:Mudchute_cow_1.ogg
+License: https://creativecommons.org/licenses/by-sa/3.0/
+
+Pig ambience: Pig SFX Pack by Vinrax. CC BY 3.0.
+Source: https://opengameart.org/content/pig-sfx-pack
+License: https://creativecommons.org/licenses/by/3.0/

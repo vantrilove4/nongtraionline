@@ -9,6 +9,15 @@
     : 'en';
 
   const translations = [
+    ['💬 Chat chung', '💬 Global Chat'], ['Mở chat chung', 'Open global chat'], ['Thu nhỏ chat', 'Minimize chat'],
+    ['Đăng nhập để tham gia chat chung.', 'Log in to join the global chat.'], ['Đang tải tin nhắn…', 'Loading messages…'],
+    ['Chat chung · mọi người đều có thể xem', 'Global chat · visible to everyone'], ['Chưa kết nối được. Chạm để thử lại.', 'Could not connect. Tap to retry.'],
+    ['Viết tin nhắn…', 'Write a message…'], ['Gửi', 'Send'], ['Chưa có tin nhắn. Hãy chào mọi người nhé!', 'No messages yet. Say hello!'],
+    ['Thử tải lại', 'Reload'], ['Báo cáo', 'Report'], ['Chặn người chơi', 'Block player'], ['Đã chặn người chơi này.', 'This player has been blocked.'],
+    ['Lý do báo cáo', 'Report reason'], ['Quấy rối', 'Harassment'], ['Không phù hợp', 'Inappropriate'],
+    ['Tin nhắn tối đa 300 ký tự.', 'Messages can contain up to 300 characters.'], ['Đang gửi…', 'Sending…'],
+    ['Mất kết nối chat. Đang thử kết nối lại…', 'Chat disconnected. Reconnecting…'],
+    ['Đã gửi báo cáo để quản trị viên xem xét.', 'Report sent for moderator review.'],
     ['Nhiệm vụ & phần thưởng', 'Quests & Rewards'], ['Bảng xếp hạng', 'Leaderboard'], ['Người giao nhiệm vụ', 'Quest giver'], ['5 nhiệm vụ', '5 quests'], ['Chào bạn nhé! Anh Trí sẽ quay lại sau 30 phút.', 'Goodbye! Anh Tri will be back in 30 minutes.'], ['Hẹn gặp lại', 'See you again'],
     ['Chợ người chơi', 'Player Market'], ['Thông tin mới cập nhật', 'What’s New'],
     ['Thời gian vật nuôi', 'Animal production time'], ['Thời gian cây trồng', 'Crop growing time'],
@@ -29,6 +38,18 @@
     ['Đồng bộ', 'Sync'], ['Điểm danh', 'Daily check-in'], ['Thành tích', 'Achievements'],
     ['Sưu tập', 'Collection'], ['Nhiệm vụ', 'Quests'], ['Phần thưởng', 'Rewards'],
     ['Nhật ký', 'Journal'], ['Hướng dẫn', 'Guide'], ['Toàn màn hình', 'Fullscreen'],
+    ['🌱 Làm quen với Vườn Nhỏ', '🌱 Welcome to Little Garden'], ['🎉 Tính năng mới đã mở', '🎉 A new feature is unlocked'],
+    ['Đi lại trong nông trại', 'Moving around the farm'], ['Chạm vào đường đi để nhân vật tự di chuyển. Trên máy tính, dùng WASD hoặc phím mũi tên; trên điện thoại, dùng cụm phím điều hướng.', 'Tap a path to move your character. On a computer, use WASD or the arrow keys; on a phone, use the directional pad.'],
+    ['Trồng và chăm cây', 'Plant and care for crops'], ['Đến gần luống rồi nhấn E hoặc nút thao tác. Cuốc đất, chọn hạt trong Túi, gieo hạt, tưới cây và thu hoạch khi cây chín.', 'Go near a plot and press E or the action button. Till the soil, choose seeds from Inventory, plant, water, and harvest when ripe.'],
+    ['Cửa hàng và túi đồ', 'The shop and inventory'], ['Dùng xu mua hạt giống và thức ăn trong Cửa hàng. Nông sản thu hoạch được cất vào Túi, nơi bạn có thể bán để nhận xu và XP.', 'Spend coins on seeds and feed in the Shop. Harvested produce goes into Inventory, where you can sell it for coins and XP.'],
+    ['Chăm vật nuôi', 'Care for livestock'], ['Mở khóa khu nuôi theo cấp, mua con giống trong Cửa hàng, rồi dùng đúng loại thức ăn ở máng. Sản phẩm sẽ sẵn sàng để thu tại máng nhận.', 'Unlock animal areas by leveling up, buy animals in the Shop, and use the right feed at each trough. Collect products from the collection station when they are ready.'],
+    ['Nhiệm vụ và lưu tiến trình', 'Quests and saving progress'], ['Mở Nhiệm vụ để xem mục tiêu và phần thưởng. Tiến trình khách lưu trên thiết bị; đăng nhập để đồng bộ nông trại khi đổi thiết bị.', 'Open Quests to see goals and rewards. Guest progress is saved on this device; sign in to sync your farm across devices.'],
+    ['Đã mở khu gà!', 'Chicken area unlocked!'], ['Đến khu gà và mở Cửa hàng để mua gà. Mua cám gà, cho ăn tại máng; khi sẵn sàng, thu trứng ở máng nhận sản phẩm.', 'Visit the chicken area and open the Shop to buy chickens. Buy chicken feed and feed them at the trough; collect eggs from the collection station when ready.'],
+    ['Đã mở khu heo!', 'Pig area unlocked!'], ['Khu heo đã mở. Mua heo và cám heo trong Cửa hàng; cho ăn ở máng riêng rồi quay lại thu sản phẩm khi hoàn tất.', 'The pig area is open. Buy pigs and pig feed in the Shop, feed them at their trough, then return to collect their products.'],
+    ['Đã mở khu bò!', 'Cow area unlocked!'], ['Khu bò đã mở. Mua bò và cỏ khô bò trong Cửa hàng; cho ăn tại máng bò và thu sữa ở máng nhận.', 'The cow area is open. Buy cows and hay in the Shop, feed them at the cow trough, and collect milk at the collection station.'],
+    ['Đã mở ao cá!', 'Fish pond unlocked!'], ['Ao cá đã mở. Mua cá và thức ăn cá trong Cửa hàng, cho ăn tại hồ rồi thu cá khi sản phẩm sẵn sàng.', 'The fish pond is open. Buy fish and fish feed in the Shop, feed them at the pond, and collect fish when ready.'],
+    ['Đất trồng được mở rộng', 'More land unlocked'], ['Bạn đã mở thêm đất trồng. Hãy khám phá các luống mới và dùng hạt giống phù hợp với cấp hiện tại.', 'You have unlocked more farmland. Explore the new plots and use seeds available at your current level.'],
+    ['HƯỚNG DẪN', 'GUIDE'], ['Để sau', 'Later'], ['Bắt đầu chơi', 'Start playing'], ['Tiếp theo', 'Next'],
     ['Túi nông trại', 'Farm Inventory'], ['Chợ nông trại', 'Farm Market'], ['Cửa hàng nông trại', 'Farm Shop'],
     ['Chọn hạt giống', 'Choose seeds'], ['Chọn nhân vật', 'Choose a character'],
     ['Giao diện', 'Area skins'], ['🏡 Giao diện', '🏡 Area skins'],
@@ -96,6 +117,7 @@
     for (const [source, target] of translations) result = result.replaceAll(source, target);
     return result;
   }
+  window.gameTranslate = translate;
 
   const sourceText = new WeakMap();
   const appliedText = new WeakMap();
