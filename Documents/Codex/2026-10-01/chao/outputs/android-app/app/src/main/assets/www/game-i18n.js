@@ -108,7 +108,7 @@
     ['Chọn số lượng rồi nhấn Bán để bán sản phẩm.', 'Choose a quantity, then select Sell.'],
     ['Không có thay đổi nào được ghi nhận ở giao dịch này. Kiểm tra kết nối rồi thử lại.', 'No changes were recorded for this transaction. Check your connection and try again.'],
     ['Ngày tính theo giờ Việt Nam (Asia/Ho_Chi_Minh), không theo đồng hồ thiết bị.', 'Days use Vietnam time (Asia/Ho_Chi_Minh), not the device clock.'],
-    ['VƯỜN NHỎ', 'LITTLE GARDEN'], ['Vườn Nhỏ', 'Little Garden'], ['Menu', 'Menu']
+    ['VƯỜN NHỎ', 'LITTLE GARDEN'], ['Vườn Nhỏ', 'Little Garden'], ['Menu', 'Menu'],
     ['Đăng nhập bằng Google', 'Sign in with Google'],
     ['Đăng nhập bằng Google hoặc email. Hãy dùng đúng email đã liên kết với nông trại hiện tại.', 'Sign in with Google or email. Use the same email already linked to your farm.'],
     ['Tài khoản Google này chưa có nông trại trên máy chủ. Để tránh ghép nhầm dữ liệu, game sẽ chưa tải nông trại trên thiết bị lên tài khoản cho đến khi bạn xác nhận.', 'This Google account has no farm on the server yet. To prevent mixing data, your device farm will not be uploaded until you confirm.'],
