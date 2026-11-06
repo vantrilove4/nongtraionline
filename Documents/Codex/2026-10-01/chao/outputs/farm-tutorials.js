@@ -3,7 +3,7 @@
 
   const FIRST_RUN_STEPS = [
     { title: 'Đi lại trong nông trại', body: 'Chạm vào đường đi để nhân vật tự di chuyển. Trên máy tính, dùng WASD hoặc phím mũi tên; trên điện thoại, dùng cụm phím điều hướng.' },
-    { title: 'Trồng và chăm cây', body: 'Đến gần luống rồi nhấn E hoặc nút thao tác. Cuốc đất, chọn hạt trong Túi, gieo hạt, tưới cây và thu hoạch khi cây chín.' },
+    { title: 'Trồng và chăm cây', body: 'Đến gần ô đất rồi nhấn E hoặc nút thao tác để chọn hạt giống và gieo. Tưới cây, rồi thu hoạch khi cây chín.' },
     { title: 'Cửa hàng và túi đồ', body: 'Dùng xu mua hạt giống và thức ăn trong Cửa hàng. Nông sản thu hoạch được cất vào Túi, nơi bạn có thể bán để nhận xu và XP.' },
     { title: 'Chăm vật nuôi', body: 'Mở khóa khu nuôi theo cấp, mua con giống trong Cửa hàng, rồi dùng đúng loại thức ăn ở máng. Sản phẩm sẽ sẵn sàng để thu tại máng nhận.' },
     { title: 'Nhiệm vụ và lưu tiến trình', body: 'Mở Nhiệm vụ để xem mục tiêu và phần thưởng. Tiến trình khách lưu trên thiết bị; đăng nhập để đồng bộ nông trại khi đổi thiết bị.' }
