@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf1dc">
+  <meta name="description" content="Chính sách quyền riêng tư của game Vườn Nhỏ, gồm thông tin tài khoản, tiến trình nông trại, chat và các dịch vụ được sử dụng.">
+  <title>Chính sách quyền riêng tư · Vườn Nhỏ</title>
+  <style>
+    :root{color-scheme:light;--ink:#243c30;--leaf:#4f8258;--muted:#69796a;--paper:#fffdf5;--edge:#dfe5d2;--wash:#eef3e6;--gold:#edc36b}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e7f0da,#f5f4e9 420px);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}
+    a{color:#376a49;text-underline-offset:3px}.shell{width:min(940px,calc(100% - 28px));margin:26px auto 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.brand{display:flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;font-size:18px;font-weight:900}.seed{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:#d8eac5;font-size:23px}.nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.nav a,.lang button{border:1px solid var(--edge);border-radius:12px;background:var(--paper);padding:8px 12px;color:var(--ink);font:700 13px system-ui;text-decoration:none;cursor:pointer}.lang{display:flex;gap:4px;padding:3px;border:1px solid var(--edge);border-radius:13px;background:#f1f4e8}.lang button{border:0;padding:6px 9px;background:transparent}.lang button[aria-pressed="true"]{background:var(--leaf);color:#fff}.hero,.content{border:1px solid #fff;border-radius:22px;background:var(--paper);box-shadow:0 10px 35px #35563312}.hero{padding:clamp(22px,5vw,42px);margin-bottom:14px}.eyebrow{display:inline-flex;align-items:center;gap:7px;border-radius:20px;background:#edf4e5;padding:5px 11px;color:#4c754b;font-size:12px;font-weight:800;letter-spacing:.02em}.hero h1{margin:14px 0 8px;font-size:clamp(28px,5vw,40px);line-height:1.15}.lead{max-width:720px;margin:0;color:var(--muted);font-size:17px}.updated{margin-top:14px;color:#788475;font-size:13px}.content{padding:clamp(18px,4vw,34px)}.doc[hidden]{display:none}.doc h2{margin:30px 0 8px;font-size:21px;line-height:1.3}.doc h2:first-child{margin-top:0}.doc h3{margin:18px 0 5px;font-size:16px}.doc p{margin:8px 0}.doc ul{margin:8px 0 12px;padding-left:22px}.doc li{padding-left:3px;margin:4px 0}.note{border-left:4px solid #8eb575;border-radius:0 12px 12px 0;background:var(--wash);padding:12px 15px;margin:14px 0;color:#405d45}.contact{border:1px dashed #cbd8bd;border-radius:13px;background:#f8f8ef;padding:14px;margin-top:20px}.footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:18px 6px;color:#778574;font-size:13px}.footer a{font-weight:700}.en{display:none}.shell[data-language="en"] .vi{display:none}.shell[data-language="en"] .en{display:block}.shell[data-language="vi"] .vi{display:block}.shell[data-language="vi"] .en{display:none}
+    @media(max-width:620px){.shell{margin-top:12px}.top{align-items:flex-start;flex-direction:column}.nav{width:100%}.hero,.content{border-radius:17px}.lead{font-size:15px}}
+  </style>
+</head>
+<body>
+  <main class="shell" id="page" data-language="vi">
+    <header class="top">
+      <a class="brand" href="./index.html"><span class="seed">🌱</span><span>Vườn Nhỏ</span></a>
+      <nav class="nav" aria-label="Điều hướng">
+        <a href="./index.html">← Vào trò chơi</a>
+        <a href="./terms.html">Điều khoản</a>
+        <div class="lang" aria-label="Ngôn ngữ">
+          <button type="button" data-lang="vi" aria-pressed="true">VI</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </nav>
+    </header>
+    <section class="hero">
+      <span class="eyebrow">🌿 THÔNG TIN DỮ LIỆU</span>
+      <h1 class="vi">Chính sách quyền riêng tư</h1><h1 class="en">Privacy Policy</h1>
+      <p class="lead vi">Chính sách này giải thích Vườn Nhỏ xử lý thông tin tài khoản, tiến trình nông trại và nội dung người chơi như thế nào.</p>
+      <p class="lead en">This policy explains how Vườn Nhỏ handles account information, farm progress, and player content.</p>
+      <div class="updated vi">Cập nhật lần cuối: 6 tháng 11, 2026</div><div class="updated en">Last updated: November 6, 2026</div>
+    </section>
+    <article class="content doc vi" lang="vi">
+      <h2>1. Phạm vi và đơn vị vận hành</h2>
+      <p>Vườn Nhỏ là game nông trại chạy trên web. Chính sách này áp dụng khi bạn truy cập game tại <a href="https://nongtraionline.vercel.app/">nongtraionline.vercel.app</a>, chơi với tư cách khách, đăng nhập, đồng bộ dữ liệu hoặc dùng các tính năng trực tuyến.</p>
+      <p>Game được lưu trữ trên Vercel. Các chức năng tài khoản, cơ sở dữ liệu, đồng bộ và chat sử dụng Supabase. Đăng nhập Google được chuyển qua Google và Supabase Auth.</p>
+
+      <h2>2. Thông tin được xử lý</h2>
+      <h3>Tài khoản và đăng nhập</h3>
+      <p>Khi đăng ký hoặc đăng nhập, Supabase Auth xử lý mã tài khoản và thông tin xác thực. Với tài khoản email/mật khẩu, mật khẩu được gửi tới Supabase Auth; game không hiển thị hoặc lưu mật khẩu dưới dạng văn bản. Nếu bạn chọn Google, Google và Supabase xử lý thông tin cần thiết để xác thực tài khoản, chẳng hạn mã định danh tài khoản và email được cung cấp. Game không yêu cầu quyền truy cập Google Drive hoặc danh bạ.</p>
+      <h3>Tiến trình nông trại</h3>
+      <p>Game có thể lưu tên vườn, vị trí nhân vật, cây trồng, vật nuôi, xu, XP, vật phẩm, nhiệm vụ, thành tích, bộ sưu tập, giao diện và các lựa chọn trong game. Khi chơi khách, tiến trình được lưu trong bộ nhớ trình duyệt trên thiết bị hiện tại. Khi đăng nhập và đồng bộ, dữ liệu tiến trình được gắn với tài khoản Supabase để khôi phục trên thiết bị khác.</p>
+      <h3>Tính năng nhiều người chơi</h3>
+      <ul>
+        <li><strong>Bảng xếp hạng:</strong> tên vườn hoặc tên hiển thị, cấp, XP và chỉ số tài sản trong game có thể được công khai trên bảng xếp hạng. Bảng không hiển thị email hay mã tài khoản.</li>
+        <li><strong>Chợ người chơi:</strong> người chơi đã đăng nhập có thể xem tin đang mở gồm vật phẩm, số lượng, giá và tên vườn của người bán. Dữ liệu cần thiết cho giao dịch được ghi nhận trong cơ sở dữ liệu.</li>
+        <li><strong>Chat chung:</strong> người chơi đã đăng nhập có thể thấy tên hiển thị, nội dung tin nhắn và thời gian gửi. Tin nhắn có thể được báo cáo để quản trị xem xét; danh sách chặn áp dụng cho tài khoản của người chặn.</li>
+      </ul>
+      <h3>Thông tin thiết bị và ngôn ngữ</h3>
+      <p>Trình duyệt lưu một số dữ liệu cần thiết như tiến trình khách, phiên đăng nhập, tùy chọn ngôn ngữ và mã quốc gia gần đúng dùng để chọn ngôn ngữ. Khi bật tự động theo vị trí mạng, game gửi yêu cầu đến ipwho.is để nhận mã quốc gia từ IP; game không yêu cầu GPS hay vị trí chính xác. Mã quốc gia và thời điểm kiểm tra được lưu trong bộ nhớ trình duyệt tối đa khoảng 24 giờ. Bạn có thể chọn ngôn ngữ thủ công trong cài đặt.</p>
+      <p>Nhà cung cấp dịch vụ lưu trữ, xác thực và API có thể nhận thông tin kết nối kỹ thuật như địa chỉ IP, loại trình duyệt, thời điểm và yêu cầu mạng để vận hành, bảo mật và khắc phục sự cố. Vị trí xử lý dữ liệu phụ thuộc cấu hình vùng của nhà cung cấp.</p>
+
+      <h2>3. Mục đích sử dụng</h2>
+      <ul>
+        <li>Tạo và xác thực tài khoản, tải và lưu tiến trình nông trại.</li>
+        <li>Vận hành bảng xếp hạng, chợ người chơi, chat chung, báo cáo và chống lạm dụng.</li>
+        <li>Ghi nhận giao dịch trong game, bảo vệ tài khoản và xử lý lỗi kỹ thuật.</li>
+        <li>Chọn ngôn ngữ phù hợp khi bạn bật tự động theo vị trí mạng.</li>
+        <li>Trả lời yêu cầu hỗ trợ và thực hiện các nghĩa vụ theo pháp luật áp dụng.</li>
+      </ul>
+
+      <h2>4. Chia sẻ thông tin</h2>
+      <p>Vườn Nhỏ không bán dữ liệu cá nhân. Thông tin được cung cấp cho các nhà cung cấp cần thiết để vận hành dịch vụ: Google cho đăng nhập Google; Supabase cho xác thực, cơ sở dữ liệu và chức năng trực tuyến; Vercel cho lưu trữ website; ipwho.is chỉ được gọi để tra mã quốc gia khi dùng tự động ngôn ngữ. Các nhà cung cấp này xử lý dữ liệu theo dịch vụ và cấu hình của họ.</p>
+      <p>Một số nội dung được chia sẻ với người chơi khác như mô tả ở mục 2. Nội dung chat là nội dung trong phòng chung, không nên gửi email, mật khẩu, mã xác minh, thông tin thanh toán hoặc dữ liệu riêng tư vào chat.</p>
+      <p>Dữ liệu có thể được cung cấp khi pháp luật yêu cầu hoặc khi cần thiết để bảo vệ người chơi, dịch vụ và quyền hợp pháp.</p>
+
+      <h2>5. Lưu trữ và thời hạn</h2>
+      <ul>
+        <li>Tiến trình khách nằm trên thiết bị cho đến khi bạn xóa dữ liệu trình duyệt; bạn có thể dùng chức năng xuất dữ liệu để tự sao lưu.</li>
+        <li>Dữ liệu cloud được lưu gắn với tài khoản trong thời gian tài khoản còn hoạt động và khi cần để cung cấp tính năng. Việc xóa tài khoản có thể làm mất tiến trình và vật phẩm gắn với tài khoản.</li>
+        <li>Theo cấu hình hiện tại của chat, tin nhắn được dọn sau 30 ngày và báo cáo sau 180 ngày khi tác vụ dọn dữ liệu được gọi.</li>
+        <li>Tin chợ đã đóng hoặc dữ liệu giao dịch có thể được giữ trong thời gian cần thiết cho bảo mật, lịch sử giao dịch và xử lý tranh chấp.</li>
+      </ul>
+
+      <h2>6. Bảo mật</h2>
+      <p>Game sử dụng phiên Supabase Auth, kết nối HTTPS và quyền truy cập theo tài khoản cho các dữ liệu riêng tư. Không có biện pháp truyền hoặc lưu trữ nào bảo đảm an toàn tuyệt đối. Hãy giữ bí mật mật khẩu, không chia sẻ mã đăng nhập và đăng xuất khỏi thiết bị dùng chung.</p>
+
+      <h2>7. Lựa chọn và quyền của bạn</h2>
+      <p>Bạn có thể chơi khách, thay đổi ngôn ngữ, xuất hoặc xóa dữ liệu khách trên trình duyệt, và yêu cầu truy cập, chỉnh sửa, hạn chế xử lý hoặc xóa dữ liệu tài khoản theo pháp luật áp dụng. Yêu cầu cần được xác minh để tránh thay đổi nhầm dữ liệu của người khác. Yêu cầu xóa tiến trình cloud có thể không khôi phục được.</p>
+      <p>Để ngừng dùng Google đăng nhập, bạn có thể đăng xuất trong game và quản lý quyền kết nối ứng dụng tại tài khoản Google. Việc thu hồi quyền đăng nhập không tự xóa tài khoản hay tiến trình trong game.</p>
+
+      <h2>8. Trẻ vị thành niên</h2>
+      <p>Người chưa đủ tuổi tự quyết định việc sử dụng dịch vụ cần có sự đồng ý và hướng dẫn của cha mẹ hoặc người giám hộ theo quy định áp dụng. Vui lòng không gửi thông tin nhận dạng hoặc thông tin liên hệ cá nhân trong chat chung.</p>
+
+      <h2>9. Thay đổi chính sách</h2>
+      <p>Chính sách có thể được cập nhật khi game hoặc cách xử lý dữ liệu thay đổi. Bản mới sẽ được đăng tại trang này cùng ngày cập nhật. Nếu thay đổi ảnh hưởng đáng kể đến dữ liệu người chơi, game sẽ thông báo phù hợp trước hoặc khi thay đổi có hiệu lực.</p>
+
+      <div class="contact"><strong>Liên hệ về quyền riêng tư</strong><p>Email hỗ trợ: <a href="mailto:nvantri93@gmail.com">nvantri93@gmail.com</a>. Khi gửi yêu cầu, hãy nêu tên vườn và loại yêu cầu; không gửi mật khẩu, token hoặc mã xác minh.</p></div>
+      <p class="note"><strong>Lưu ý:</strong> Vườn Nhỏ hướng tới người chơi tại Việt Nam. Nội dung này mô tả cách game đang hoạt động và không thay thế tư vấn pháp lý cho từng trường hợp.</p>
+    </article>
+    <article class="content doc en" lang="en" hidden>
+      <h2>1. Scope and operator</h2>
+      <p>Vườn Nhỏ is a browser-based farming game. This policy applies when you visit <a href="https://nongtraionline.vercel.app/">nongtraionline.vercel.app</a>, play as a guest, sign in, sync game data, or use online features.</p>
+      <p>The website is hosted on Vercel. Account, database, synchronization, and chat features use Supabase. Google sign-in is handled through Google and Supabase Auth.</p>
+
+      <h2>2. Information processed</h2>
+      <h3>Account and sign-in</h3>
+      <p>When you register or sign in, Supabase Auth processes an account identifier and authentication information. For email/password accounts, the password is sent to Supabase Auth; the game does not display or store it as plain text. If you choose Google, Google and Supabase process the information needed to authenticate you, such as an account identifier and the email Google provides. The game does not request access to Google Drive or contacts.</p>
+      <h3>Farm progress</h3>
+      <p>The game may store your garden name, character position, crops, animals, coins, XP, items, quests, achievements, collections, area skins, and game settings. Guest progress is stored in the browser on the current device. When you sign in and sync, farm data is associated with your Supabase account so it can be restored on another device.</p>
+      <h3>Online features</h3>
+      <ul>
+        <li><strong>Leaderboard:</strong> your garden or display name, level, XP, and in-game asset score may be shown publicly. The leaderboard does not show your email or account ID.</li>
+        <li><strong>Player market:</strong> signed-in players can see active listings, including item, quantity, price, and the seller's garden name. Information needed to complete a transaction is recorded in the database.</li>
+        <li><strong>Global chat:</strong> signed-in players can see display names, message content, and send times. Messages may be reported for moderation; block lists apply to the blocking account.</li>
+      </ul>
+      <h3>Device information and language</h3>
+      <p>The browser stores necessary data such as guest progress, sign-in session, language preference, and an approximate country code used to select a language. When automatic network-based language detection is enabled, the game sends a request to ipwho.is to obtain a country code from your IP address. The game does not request GPS or precise location. The country code and check time are stored in browser storage for up to about 24 hours. You can choose a language manually in Settings.</p>
+      <p>Hosting, authentication, and API providers may receive technical connection information such as IP address, browser type, request time, and network requests to operate, secure, and troubleshoot the service. Processing locations depend on each provider's configured region.</p>
+
+      <h2>3. Why information is used</h2>
+      <ul>
+        <li>Create and authenticate accounts; load and save farm progress.</li>
+        <li>Operate the leaderboard, player market, global chat, reporting, and abuse prevention.</li>
+        <li>Record in-game transactions, protect accounts, and diagnose technical issues.</li>
+        <li>Select a language when you enable automatic network-based detection.</li>
+        <li>Respond to support requests and comply with applicable law.</li>
+      </ul>
+
+      <h2>4. Sharing</h2>
+      <p>Vườn Nhỏ does not sell personal data. Information is provided to service providers needed to operate the game: Google for Google sign-in; Supabase for authentication, database, and online features; Vercel for website hosting; and ipwho.is for country-code lookup when automatic language detection is used. These providers process information under their services and configurations.</p>
+      <p>Some content is shared with other players as described above. Global chat is visible in the shared room. Do not post email addresses, passwords, verification codes, payment details, or private information in chat.</p>
+      <p>Information may be disclosed when required by law or when necessary to protect players, the service, or legal rights.</p>
+
+      <h2>5. Storage and retention</h2>
+      <ul>
+        <li>Guest progress remains on your device until browser data is cleared. You can export a backup for yourself.</li>
+        <li>Cloud data is associated with your account while it is active and as needed to provide features. Deleting an account may permanently remove linked progress and items.</li>
+        <li>Under the current chat configuration, messages are purged after 30 days and reports after 180 days when the cleanup routine runs.</li>
+        <li>Closed market listings or transaction data may be retained as needed for security, transaction history, and dispute handling.</li>
+      </ul>
+
+      <h2>6. Security</h2>
+      <p>The game uses Supabase Auth sessions, HTTPS connections, and account-scoped access for private data. No method of transmission or storage is completely secure. Keep your password private, do not share sign-in codes, and sign out on shared devices.</p>
+
+      <h2>7. Your choices and rights</h2>
+      <p>You can play as a guest, change the language, export or clear guest data in your browser, and request access, correction, restriction, or deletion of account data as provided by applicable law. Requests may need identity verification to prevent changes to another player's data. Deleting cloud progress may be irreversible.</p>
+      <p>To stop using Google sign-in, sign out in the game and manage connected apps in your Google Account. Revoking sign-in access does not automatically delete your game account or progress.</p>
+
+      <h2>8. Minors</h2>
+      <p>Players who are not old enough to decide independently whether to use the service need the consent and guidance of a parent or guardian as required by applicable law. Do not post identifying or personal contact information in global chat.</p>
+
+      <h2>9. Policy changes</h2>
+      <p>This policy may change when the game or its data practices change. The latest version and update date will be posted here. If a change materially affects player data, the game will provide an appropriate notice before or when it takes effect.</p>
+
+      <div class="contact"><strong>Privacy contact</strong><p>Support email: <a href="mailto:nvantri93@gmail.com">nvantri93@gmail.com</a>. Include your garden name and the type of request. Do not send passwords, tokens, or verification codes.</p></div>
+      <p class="note"><strong>Note:</strong> Vườn Nhỏ is designed primarily for players in Vietnam. This page describes the current game behavior and is not legal advice for a particular situation.</p>
+    </article>
+    <footer class="footer"><span>© Vườn Nhỏ</span><span><a href="./terms.html">Điều khoản / Terms</a> · <a href="./index.html">Vào trò chơi / Play</a></span></footer>
+  </main>
+  <script>
+    (()=>{const page=document.getElementById('page'),buttons=[...document.querySelectorAll('[data-lang]')],docs=[...document.querySelectorAll('.doc')];function setLanguage(lang){page.dataset.language=lang;document.documentElement.lang=lang;docs.forEach(doc=>doc.hidden=!doc.classList.contains(lang));buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.lang===lang)));try{localStorage.setItem('vuonnho_legal_language',lang)}catch{}}let initial='vi';try{const saved=localStorage.getItem('vuonnho_legal_language');if(saved==='vi'||saved==='en')initial=saved;else if(navigator.language?.toLowerCase().startsWith('en'))initial='en'}catch{}setLanguage(initial);buttons.forEach(button=>button.addEventListener('click',()=>setLanguage(button.dataset.lang)))})();
+  </script>
+</body>
+</html>
