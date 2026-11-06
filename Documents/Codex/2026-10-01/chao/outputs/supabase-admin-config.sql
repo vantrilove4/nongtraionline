@@ -27,9 +27,9 @@ values (1, jsonb_build_object(
   'xpMultiplier', 1,
   'feedPrice', 8,
   'announcement', '',
-  'cropHarvestSeconds', jsonb_build_object('carrot',300,'tomato',420,'potato',480,'corn',540,'pumpkin',660,'berry',600,'sunflower',720,'watermelon',780,'eggplant',840,'pineapple',900,'grape',960),
+  'cropHarvestSeconds', jsonb_build_object('carrot',30,'tomato',120,'potato',300,'corn',600,'pumpkin',1200,'berry',1800,'sunflower',3600,'watermelon',7200,'eggplant',10800,'pineapple',14400,'grape',21600),
   'cropSellPrices', jsonb_build_object('carrot',18,'tomato',33,'potato',38,'corn',55,'pumpkin',72,'berry',78,'sunflower',96,'watermelon',118,'eggplant',145,'pineapple',180,'grape',225),
-  'animalHarvestSeconds', jsonb_build_object('chicken',300,'pig',420,'cow',360,'fish',360),
+  'animalHarvestSeconds', jsonb_build_object('chicken',600,'pig',1200,'cow',1800,'fish',2700),
   'animalSellPrices', jsonb_build_object('eggs',18,'milk',30,'pork',52,'fish',38)
 ))
 on conflict (id) do nothing;
@@ -37,9 +37,9 @@ on conflict (id) do nothing;
 -- Add per-item settings to a project that already has the earlier global-only config.
 update public.game_global_config as c
 set config = c.config || jsonb_build_object(
-  'cropHarvestSeconds', coalesce(c.config->'cropHarvestSeconds', jsonb_build_object('carrot',300,'tomato',420,'potato',480,'corn',540,'pumpkin',660,'berry',600,'sunflower',720,'watermelon',780,'eggplant',840,'pineapple',900,'grape',960)),
+  'cropHarvestSeconds', coalesce(c.config->'cropHarvestSeconds', jsonb_build_object('carrot',30,'tomato',120,'potato',300,'corn',600,'pumpkin',1200,'berry',1800,'sunflower',3600,'watermelon',7200,'eggplant',10800,'pineapple',14400,'grape',21600)),
   'cropSellPrices', coalesce(c.config->'cropSellPrices', jsonb_build_object('carrot',18,'tomato',33,'potato',38,'corn',55,'pumpkin',72,'berry',78,'sunflower',96,'watermelon',118,'eggplant',145,'pineapple',180,'grape',225)),
-  'animalHarvestSeconds', coalesce(c.config->'animalHarvestSeconds', jsonb_build_object('chicken',300,'pig',420,'cow',360,'fish',360)),
+  'animalHarvestSeconds', coalesce(c.config->'animalHarvestSeconds', jsonb_build_object('chicken',600,'pig',1200,'cow',1800,'fish',2700)),
   'animalSellPrices', coalesce(c.config->'animalSellPrices', jsonb_build_object('eggs',18,'milk',30,'pork',52,'fish',38))
 )
 where c.id = 1;
@@ -146,9 +146,9 @@ begin
     raise exception 'Thời gian và giá từng loại phải là số.' using errcode = '22023';
   end if;
 
-  if exists (select 1 from jsonb_each_text(v_crop_times) as e(key,value) where e.value::numeric < 60 or e.value::numeric > 86400 or trunc(e.value::numeric) <> e.value::numeric)
+  if exists (select 1 from jsonb_each_text(v_crop_times) as e(key,value) where e.value::numeric < 30 or e.value::numeric > 86400 or trunc(e.value::numeric) <> e.value::numeric)
      or exists (select 1 from jsonb_each_text(v_animal_times) as e(key,value) where e.value::numeric < 60 or e.value::numeric > 86400 or trunc(e.value::numeric) <> e.value::numeric) then
-    raise exception 'Thời gian thu hoạch phải là số nguyên từ 60 đến 86400 giây.' using errcode = '22023';
+    raise exception 'Thời gian cây trồng phải từ 30 đến 86400 giây; thời gian vật nuôi phải từ 60 đến 86400 giây.' using errcode = '22023';
   end if;
 
   if exists (select 1 from jsonb_each_text(v_crop_prices) as e(key,value) where e.value::numeric < 1 or e.value::numeric > 1000000 or trunc(e.value::numeric) <> e.value::numeric)

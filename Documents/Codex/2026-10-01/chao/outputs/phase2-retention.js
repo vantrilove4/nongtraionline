@@ -6,19 +6,29 @@
   const rpc = (name, payload = {}) => api.rpc(name, payload);
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
   const number = value => new Intl.NumberFormat('vi-VN').format(Math.max(0, Number(value) || 0));
+  const makeRequestUuid = () => {
+    if (api.newRequestId) return api.newRequestId();
+    const bytes = new Uint8Array(16);
+    if (globalThis.crypto?.getRandomValues) globalThis.crypto.getRandomValues(bytes);
+    else for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+    bytes[6] = (bytes[6] & 15) | 64;
+    bytes[8] = (bytes[8] & 63) | 128;
+    const h = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+  };
   const requestId = scope => {
     const user = api.userId() || 'guest';
     const key = `vuonnho_phase2_request_${user}_${scope}`;
     let value = localStorage.getItem(key);
-    if (!value) {
-      value = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value || '')) {
+      value = makeRequestUuid();
       localStorage.setItem(key, value);
     }
     return { key, value };
   };
   const forgetRequest = key => localStorage.removeItem(key);
   const style = document.createElement('style');
-  style.textContent = `.p2-tabs{display:flex;gap:6px;overflow:auto;padding:3px 1px 8px;position:sticky;top:-10px;background:#fffdf4;z-index:2}.p2-tabs button,.p2-row button{border:1px solid #d9e2cf;border-radius:9px;background:#f3f6e9;color:#344b37;padding:8px 10px;font:700 12px system-ui;white-space:nowrap}.p2-tabs button.active{background:#54865c;color:white}.p2-list{display:grid;gap:8px}.p2-row{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #e3e2cf;border-radius:11px;background:#fffefa;padding:10px}.p2-row-main{min-width:0;flex:1}.p2-row strong{display:block;font-size:13px}.p2-row small{display:block;color:#73806b;margin-top:3px;line-height:1.4}.p2-row button{background:#54865c;color:white}.p2-row button:disabled{opacity:.48}.p2-note{border-radius:9px;background:#f2f4e8;padding:9px;color:#596c54;font-size:12px;line-height:1.5}.p2-loading{padding:20px;text-align:center;color:#64755e}`;
+  style.textContent = `.p2-tabs{display:flex;gap:6px;overflow:auto;padding:3px 1px 8px;position:sticky;top:-10px;background:#fffdf4;z-index:2}.p2-tabs button,.p2-row button{border:1px solid #d9e2cf;border-radius:9px;background:#f3f6e9;color:#344b37;padding:8px 10px;font:700 12px system-ui;white-space:nowrap}.p2-tabs button.active{background:#54865c;color:white}.p2-list{display:grid;gap:8px}.p2-row{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #e3e2cf;border-radius:11px;background:#fffefa;padding:10px}.p2-row-main{min-width:0;flex:1}.p2-row strong{display:block;font-size:13px}.p2-row small{display:block;color:#73806b;margin-top:3px;line-height:1.4}.p2-row button{background:#54865c;color:white}.p2-row button:disabled{opacity:.48}.p2-note{border-radius:9px;background:#f2f4e8;padding:9px;color:#596c54;font-size:12px;line-height:1.5}.p2-loading{padding:20px;text-align:center;color:#64755e}.phase2-quick{position:relative!important}.phase2-quick.has-unclaimed-quests::after{content:'!';position:absolute;top:-6px;right:-6px;width:18px;height:18px;display:grid;place-items:center;border:2px solid #fffdf4;border-radius:50%;background:#e53935;color:white;font:900 12px/1 system-ui;box-shadow:0 1px 5px #263b2a77;z-index:4;pointer-events:none}`;
   document.head.appendChild(style);
 
   const tabs = [
@@ -29,6 +39,14 @@
   let renderGeneration = 0;
   let autoCheckinAttempted = false;
   let autoCheckinWaitingForGardenName = false;
+  function updateQuestCompletionBadge(show) {
+    const button = document.getElementById('phase2Retention');
+    if (!button) return;
+    button.classList.toggle('has-unclaimed-quests', !!show);
+    const label = show ? 'Nhiệm vụ và phần thưởng — có nhiệm vụ hoàn thành chưa nhận thưởng' : 'Nhiệm vụ và phần thưởng';
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  }
 
   function frame(tab, content) {
     const nav = tabs.map(([key, label]) => `<button type="button" role="tab" aria-selected="${key === tab}" class="${key === tab ? 'active' : ''}" data-p2-tab="${key}">${label}</button>`).join('');
@@ -96,14 +114,14 @@
         html = rows(quests, q => {
           const claimed = !!q.claimed_at;
           const done = Number(q.progress) >= Number(q.target);
-          return actionRow(q.title || q.quest_id, `${number(q.progress)} / ${number(q.target)} · ${reward(q.reward_coins, q.reward_xp)}${claimed ? ' · Đã nhận' : ''}`, !claimed && done ? { action: 'claim-daily', id: q.quest_id, label: 'Nhận' } : null, false);
+          return actionRow(q.title || q.quest_id, `${number(q.progress)} / ${number(q.target)} · ${reward(q.reward_coins, q.reward_xp)}${done && !claimed ? ' · ✅ Hoàn thành' : ''}${claimed ? ' · Đã nhận' : ''}`, !claimed && done ? { action: 'claim-daily', id: q.quest_id, label: 'Nhận' } : null, false);
         });
       } else if (tab === 'weekly') {
         const result = await rpc('get_my_weekly_quests_v2');
         html = rows(result?.quests || [], q => {
           const claimed = !!q.claimed_at, done = Number(q.progress) >= Number(q.target), locked = !!q.locked;
           const label = claimed ? 'Đã nhận' : locked ? 'Đang khóa' : done ? 'Nhận' : '';
-          return actionRow(`Bước ${number(q.chain_step)} · ${q.title || q.quest_id}`, `${number(q.progress)} / ${number(q.target)} · ${reward(q.reward_coins, q.reward_xp)}`, label && !claimed && !locked && done ? { action: 'claim-weekly', id: q.quest_id, label } : null);
+          return actionRow(`Bước ${number(q.chain_step)} · ${q.title || q.quest_id}`, `${number(q.progress)} / ${number(q.target)} · ${reward(q.reward_coins, q.reward_xp)}${done && !claimed ? ' · ✅ Hoàn thành' : ''}`, label && !claimed && !locked && done ? { action: 'claim-weekly', id: q.quest_id, label } : null);
         });
       } else if (tab === 'checkin') {
         const result = await rpc('get_my_daily_checkin_v2');
@@ -151,6 +169,7 @@
       await rpc(name, { ...args, p_request_id: req.value });
       forgetRequest(req.key);
       await loadTab(activeTab);
+      await refreshCompletionNotices({ refreshPanel: false });
     } catch (error) {
       button.disabled = false;
       button.textContent = 'Thử lại';
@@ -187,7 +206,17 @@
       console.warn('Không thể kiểm tra thưởng điểm danh tự động:', error);
     }
   }
-  window.addEventListener('farm:game-ready', maybeOpenUnclaimedCheckin);
+  window.addEventListener('farm:server-action-confirmed', () => { refreshCompletionNotices(); });
+  window.addEventListener('farm:quest-completed', event => {
+    const detail = event.detail || {};
+    const scope = detail.scope === 'weekly' ? 'tuần' : 'ngày';
+    const message = `🎉 Nhiệm vụ ${scope} hoàn thành: ${detail.title || ''} · Có thể nhận thưởng.`;
+    if (typeof api.toast === 'function') api.toast(window.gameTranslate ? window.gameTranslate(message) : message);
+  });
+  async function refreshCompletionNotices({refreshPanel=true}={}){if(!api.session()||!api.ready()){updateQuestCompletionBadge(false);return}try{const [dailyResult,weeklyResult]=await Promise.all([rpc('get_my_daily_quests_v2'),rpc('get_my_weekly_quests_v2')]);const daily=Array.isArray(dailyResult)?dailyResult:dailyResult?.quests||[],weekly=weeklyResult?.quests||[],user=api.userId()||'guest';const completedDaily=daily.filter(q=>Number(q.progress)>=Number(q.target)&&!q.claimed_at),completedWeekly=weekly.filter(q=>Number(q.progress)>=Number(q.target)&&!q.claimed_at&&!q.locked);updateQuestCompletionBadge(completedDaily.length>0||completedWeekly.length>0);for(const q of completedDaily){const key='vuonnho_quest_done_'+user+'_d_'+q.period_date+'_'+q.quest_id;if(!localStorage.getItem(key)){localStorage.setItem(key,'1');window.dispatchEvent(new CustomEvent('farm:quest-completed',{detail:{scope:'daily',title:q.title||q.quest_id}}))}}for(const q of completedWeekly){const key='vuonnho_quest_done_'+user+'_w_'+weeklyResult.week_start+'_'+q.quest_id;if(!localStorage.getItem(key)){localStorage.setItem(key,'1');window.dispatchEvent(new CustomEvent('farm:quest-completed',{detail:{scope:'weekly',title:q.title||q.quest_id}}))}}if(refreshPanel&&document.getElementById('p2-content')&&['daily','weekly'].includes(activeTab))loadTab(activeTab)}catch(error){console.warn('Không thể làm mới trạng thái nhiệm vụ:',error)}}
+  window.addEventListener('farm:game-ready', () => { maybeOpenUnclaimedCheckin(); refreshCompletionNotices(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshCompletionNotices({ refreshPanel: false }); });
+  window.setInterval(() => { if (!document.hidden) refreshCompletionNotices({ refreshPanel: false }); }, 30000);
   window.addEventListener('farm:garden-name-saved', () => {
     if (autoCheckinWaitingForGardenName) maybeOpenUnclaimedCheckin();
   });
