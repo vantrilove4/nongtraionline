@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-11:12
-INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-11:12
-INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-11:12
-INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-11:12
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-17:12
+INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-17:12
+INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-17:12
+INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:1:1-17:12
 	package
 		INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -17,8 +17,8 @@ ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\s
 	android:name
 		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:2:22-64
 application
-ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:5-10:19
-INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:5-10:19
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:5-16:19
+INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:5-16:19
 	android:extractNativeLibs
 		INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml
 	android:supportsRtl
@@ -36,13 +36,15 @@ INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\ap
 	android:usesCleartextTraffic
 		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:3:190-226
 activity#com.vuonnho.mobile.MainActivity
-ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:9-9:20
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:9-15:20
 	android:screenOrientation
-		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:72-115
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:104-147
+	android:launchMode
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:72-103
 	android:exported
 		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:48-71
 	android:configChanges
-		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:116-177
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:148-209
 	android:name
 		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:4:19-47
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
@@ -55,6 +57,28 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:7:17-77
 	android:name
 		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:7:27-74
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:auth+data:path:/callback+data:scheme:com.vuonnho.mobile
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:9:13-14:29
+action#android.intent.action.VIEW
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:10:17-69
+	android:name
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:10:25-66
+category#android.intent.category.DEFAULT
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:11:17-76
+	android:name
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:11:27-73
+category#android.intent.category.BROWSABLE
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:12:17-78
+	android:name
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:12:27-75
+data
+ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:13:17-106
+	android:path
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:13:79-103
+	android:host
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:13:59-78
+	android:scheme
+		ADDED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml:13:23-58
 uses-sdk
 INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\HP\Documents\Codex\2026-10-01\chao\outputs\android-app\app\src\main\AndroidManifest.xml

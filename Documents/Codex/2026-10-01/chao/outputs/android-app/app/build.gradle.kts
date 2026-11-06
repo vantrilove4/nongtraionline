@@ -7,8 +7,8 @@ android {
         applicationId = "com.vuonnho.mobile"
         minSdk = 23
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.3"
+        versionCode = 5
+        versionName = "1.4"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

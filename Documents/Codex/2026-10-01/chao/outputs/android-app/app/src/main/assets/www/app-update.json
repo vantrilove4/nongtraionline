@@ -1,7 +1,7 @@
 {
-  "versionCode": 4,
-  "versionName": "1.3",
-  "releaseNotes": "Đường chính đã nối thông đến ruộng lúa, các điểm giao đường được hoàn thiện.",
+  "versionCode": 5,
+  "versionName": "1.4",
+  "releaseNotes": "Đăng nhập Google trên Android; thêm gợi ý tải ứng dụng khi chơi qua trình duyệt và hoàn thiện đường vào ruộng lúa.",
   "apkDownloadUrl": "https://nongtraionline.vercel.app/vuon-nho-android-moi.apk",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=com.vuonnho.mobile"
 }
