@@ -1,8 +1,9 @@
--- This RPC ranks current total farm wealth, not only the coins in the wallet.
--- Wealth = wallet coins + sell value of bag goods + purchase value of seeds/feed
--- + original purchase value of owned animals. Legacy history is not guessed.
--- Re-run in Supabase Dashboard > SQL Editor after deploying the matching web app.
+-- Apply the matching migration from outputs/migrations/20261112_025_canonical_leaderboard_v3.sql.
+-- This standalone copy is kept in sync for convenience.
+begin;
 
+-- Canonical leaderboard: rank only values confirmed in server-owned player tables.
+-- game_saves is consulted only for the garden display name, never for score data.
 create or replace function public.get_game_leaderboard_v2(
   p_kind text default 'level',
   p_limit integer default 20
@@ -20,48 +21,34 @@ stable
 security definer
 set search_path = pg_catalog, auth
 as $$
-  with item_values(item_key, value_xu, save_group) as (
+  with item_values(item_key, value_xu) as (
     values
-      ('carrot',18,'inv'),('tomato',33,'inv'),('potato',38,'inv'),
-      ('corn',55,'inv'),('pumpkin',72,'inv'),('berry',78,'inv'),
-      ('sunflower',96,'inv'),('watermelon',118,'inv'),('eggplant',145,'inv'),
-      ('pineapple',180,'inv'),('grape',225,'inv'),('eggs',18,'inv'),
-      ('milk',30,'inv'),('pork',52,'inv'),('fish',38,'inv'),
-      ('berryYogurt',260,'inv'),('pumpkinPie',165,'inv'),
-      ('fishStew',220,'inv'),('cornSausage',260,'inv'),
-      ('carrot',8,'seeds'),('tomato',14,'seeds'),('potato',16,'seeds'),
-      ('corn',22,'seeds'),('pumpkin',28,'seeds'),('berry',30,'seeds'),
-      ('sunflower',36,'seeds'),('watermelon',42,'seeds'),('eggplant',50,'seeds'),
-      ('pineapple',62,'seeds'),('grape',76,'seeds'),
-      ('chicken',8,'feeds'),('pig',8,'feeds'),('cow',8,'feeds'),('fish',8,'feeds')
-  ),
-  animal_values(item_key, value_xu) as (
-    values
-      ('chicken_field',180),('chicken_silkie',320),('chicken_golden',480),
-      ('chicken_special_scarf',980),('chicken_special_strawhat',1280),('chicken_special_amber',1680),
-      ('pig_pink',400),('pig_cream',620),('pig_spotted',880),
-      ('pig_special_flower',1450),('pig_special_sprout',1850),
-      ('cow_dairy',700),('cow_brown',1080),('cow_golden',1560),
-      ('cow_special_bell',2200),('cow_special_rosette',2800),('cow_special_bellcloud',3200),
-      ('fish_pond',500),('fish_blue',780),('fish_koi',1160),
-      ('fish_special_crown',1780),('fish_special_pearl',2300)
+      ('carrot',18),('tomato',33),('potato',38),('corn',55),('pumpkin',72),
+      ('berry',78),('sunflower',96),('watermelon',118),('eggplant',145),
+      ('pineapple',180),('grape',225),('rice',36),
+      ('eggs',18),('milk',30),('pork',52),('fish',38),
+      ('orange_fruit',18),('mango_fruit',30),('guava_fruit',24),('lychee_fruit',42),
+      ('berry_yogurt',260),('pumpkin_pie',165),('fish_stew',220),('corn_sausage',260),
+      ('seed_carrot',8),('seed_tomato',14),('seed_potato',16),('seed_corn',22),
+      ('seed_pumpkin',28),('seed_berry',30),('seed_sunflower',36),('seed_watermelon',42),
+      ('seed_eggplant',50),('seed_pineapple',62),('seed_grape',76),('seed_rice',18),
+      ('feed_chicken',8),('feed_pig',8),('feed_cow',8),('feed_fish',8),
+      ('decor_shrub',30),('decor_lamp',50),('decor_flower',35),
+      ('decor_cottage',140),('decor_scarecrow',90)
   ),
   candidates as (
     select
-      gs.user_id,
+      w.user_id,
       coalesce(
         nullif(left(regexp_replace(btrim(coalesce(gs.save_data ->> 'gardenName', '')), '[[:cntrl:]]', '', 'g'), 24), ''),
-        'Nhà vườn ' || upper(substr(replace(gs.user_id::text, '-', ''), 1, 5))
+        'Nhà vườn'
       ) as display_name,
-      case when gs.save_data ->> 'coins' ~ '^[0-9]{1,15}$'
-        then least((gs.save_data ->> 'coins')::numeric, 999999999999)::numeric
-        else 0::numeric end as wallet_coins,
-      case when gs.save_data ->> 'xp' ~ '^[0-9]{1,15}([.][0-9]{1,2})?$'
-        then least((gs.save_data ->> 'xp')::numeric, 999999999999::numeric)
-        else 0::numeric end as xp,
-      gs.save_data
-    from public.game_saves as gs
-    where jsonb_typeof(gs.save_data) = 'object'
+      w.coins::numeric as wallet_coins,
+      w.xp::numeric as xp,
+      coalesce(f.farm_state, '{}'::jsonb) as farm_state
+    from public.player_wallets as w
+    left join public.game_saves as gs on gs.user_id = w.user_id
+    left join public.player_farm_state as f on f.user_id = w.user_id
   ),
   valued as (
     select
@@ -69,22 +56,44 @@ as $$
       c.display_name,
       c.xp,
       c.wallet_coins
-        + coalesce((select sum(iv.value_xu::numeric * case when q.quantity ~ '^[0-9]{1,12}$' then q.quantity::numeric else 0 end)
-          from jsonb_each_text(case when jsonb_typeof(c.save_data -> 'inv') = 'object' then c.save_data -> 'inv' else '{}'::jsonb end) as q(item_key, quantity)
-          join item_values as iv on iv.save_group = 'inv' and iv.item_key = q.item_key
-          where q.quantity ~ '^[0-9]{1,12}$'), 0)
-        + coalesce((select sum(iv.value_xu::numeric * case when q.quantity ~ '^[0-9]{1,12}$' then q.quantity::numeric else 0 end)
-          from jsonb_each_text(case when jsonb_typeof(c.save_data -> 'seeds') = 'object' then c.save_data -> 'seeds' else '{}'::jsonb end) as q(item_key, quantity)
-          join item_values as iv on iv.save_group = 'seeds' and iv.item_key = q.item_key
-          where q.quantity ~ '^[0-9]{1,12}$'), 0)
-        + coalesce((select sum(iv.value_xu::numeric * case when q.quantity ~ '^[0-9]{1,12}$' then q.quantity::numeric else 0 end)
-          from jsonb_each_text(case when jsonb_typeof(c.save_data -> 'feeds') = 'object' then c.save_data -> 'feeds' else '{}'::jsonb end) as q(item_key, quantity)
-          join item_values as iv on iv.save_group = 'feeds' and iv.item_key = q.item_key
-          where q.quantity ~ '^[0-9]{1,12}$'), 0)
-        + coalesce((select sum(av.value_xu::numeric * case when q.quantity ~ '^[0-9]{1,12}$' then q.quantity::numeric else 0 end)
-          from jsonb_each_text(case when jsonb_typeof(c.save_data -> 'animalBreeds') = 'object' then c.save_data -> 'animalBreeds' else '{}'::jsonb end) as q(item_key, quantity)
-          join animal_values as av on av.item_key = q.item_key
-          where q.quantity ~ '^[0-9]{1,12}$'), 0)
+        + coalesce((
+          select sum(i.quantity::numeric * iv.value_xu::numeric)
+          from public.player_inventory as i
+          join item_values as iv on iv.item_key = i.item_key
+          where i.user_id = c.user_id
+        ), 0)
+        + coalesce((
+          select sum(
+            case when variant.quantity ~ '^[0-9]{1,12}$' then variant.quantity::numeric else 0 end
+            * catalog.price::numeric
+          )
+          from jsonb_each(
+            case when jsonb_typeof(c.farm_state -> 'animals') = 'object'
+              then c.farm_state -> 'animals' else '{}'::jsonb end
+          ) as animal(animal_key, animal_data)
+          cross join lateral jsonb_each_text(
+            case when jsonb_typeof(animal.animal_data -> 'variants') = 'object'
+              then animal.animal_data -> 'variants' else '{}'::jsonb end
+          ) as variant(variant_id, quantity)
+          join public.animal_variant_catalog_v2 as catalog
+            on catalog.variant_id = variant.variant_id
+           and catalog.animal_key = animal.animal_key
+          where variant.quantity ~ '^[0-9]{1,12}$'
+        ), 0)
+        + coalesce((
+          select sum(case tree.species when 'orange' then 250 when 'mango' then 440 when 'guava' then 340 when 'lychee' then 680 else 0 end)::numeric
+          from public.player_orchard_trees as tree
+          where tree.user_id = c.user_id
+        ), 0)
+        + coalesce((
+          select sum(case decoration.value ->> 'type'
+            when 'shrub' then 30 when 'lamp' then 50 when 'flower' then 35
+            when 'cottage' then 140 when 'scarecrow' then 90 else 0 end)::numeric
+          from jsonb_array_elements(
+            case when jsonb_typeof(c.farm_state -> 'decorations') = 'array'
+              then c.farm_state -> 'decorations' else '[]'::jsonb end
+          ) as decoration(value)
+        ), 0)
         as total_assets
     from candidates as c
   ),
@@ -127,6 +136,8 @@ as $$
   order by r.place;
 $$;
 
-revoke all on function public.get_game_leaderboard_v2(text, integer) from public;
+revoke all on function public.get_game_leaderboard_v2(text, integer) from public, anon, authenticated;
 grant execute on function public.get_game_leaderboard_v2(text, integer) to anon, authenticated;
 notify pgrst, 'reload schema';
+
+commit;
